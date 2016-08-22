@@ -4,8 +4,9 @@ now = datetime.now()
 
 def log(t,h):
     file = open('log.csv','a')
-    file.write("T[C];H[%];")
-    file.write('%s/%s/%s;%s:%s:%s;' % (now.day, now.month, now.year, now.hour, now.minute, now.second) + str(t) + ";" + str(h))
+    file.write('%s/%s/%s;%s:%s:%s;' % (now.day, now.month, now.year, now.hour, now.minute, now.second))
+    file.write("T[C];" + str(t) + ";")
+    file.write("H[%];" + str(h))
     file.write('\n')
     file.close()
 
