@@ -16,7 +16,7 @@ def _error(message):
     print(message)
 
 def Setup():
-    print("Setting up...please wait")
+    print("Setting up... Please wait.")
     h=[]
     t=[]
     i=0
