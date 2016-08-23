@@ -1,5 +1,4 @@
 #https://github.com/kevinpulido89/R2Pub.git
-
 from pubnub import Pubnub
 import time
 
@@ -9,22 +8,24 @@ my_channel = "temp_humid"
 
 def _callback(message, channel):
     print(message)
+    #return True #Uncomment for synchronous susbcribe
 
-def callback(message):
-    print(message)
+def error(message):
+    print("ERROR : " + str(message))
 
-def _error(message):
-    print(message)
+def connect(message):
+    print("CONNECTED")
+
+def reconnect(message):
+    print("RECONNECTED")
+
+def disconnect(message):
+    print("DISCONNECTED")
 
 def loop():
     while True:
-        pubnub.subscribe(my_channel, callback=_callback)
-        
-        #Asynchronous usage
-        #pubnub.history(my_channel, count=50, include_token=True, callback=callback, error=callback)
-        
-        #Synchronous usage
-        #print (pubnub.history(my_channel, count=2, include_token=True)) 
+        pubnub.subscribe(my_channel, callback=_callback, error=error, connect=connect, reconnect=reconnect, disconnect=disconnect)
+        #pubnub.subscribe_sync(my_channel, callback=_callback)
         time.sleep(2.628)
 
 def destroy():
