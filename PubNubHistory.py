@@ -13,10 +13,10 @@ def callback(message):
 def loop():
     while True: 
         #Asynchronous usage
-        pubnub.history(my_channel, count=10, include_token=True, callback=callback, error=callback)
+        #pubnub.history(my_channel, count=10, include_token=True, callback=callback, error=callback)
         
         #Synchronous usage
-        #print (pubnub.history(my_channel, count=2, include_token=True)) 
+        print (pubnub.history(my_channel, count=2, include_token=True)) 
         time.sleep(2.628)
 
 def destroy():

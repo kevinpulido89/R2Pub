@@ -8,9 +8,8 @@ my_channel = "temp_humid"
 
 def _callback(message, channel):
     print(message)
-    #return True #Uncomment for synchronous susbcribe
 
-def error(message):
+def _error(message):
     print("ERROR : " + str(message))
 
 def connect(message):
@@ -20,19 +19,16 @@ def reconnect(message):
     print("RECONNECTED")
 
 def disconnect(message):
-    print("DISCONNECTED")
+    print("\nDISCONNECTED")
+    pubnub.unsubscribe(my_channel)
 
 def loop():
     while True:
-        pubnub.subscribe(my_channel, callback=_callback, error=error, connect=connect, reconnect=reconnect, disconnect=disconnect)
-        #pubnub.subscribe_sync(my_channel, callback=_callback)
+        pubnub.subscribe(my_channel, callback=_callback, error=_error, connect=connect, reconnect=reconnect, disconnect=disconnect)
         time.sleep(2.628)
-
-def destroy():
-    print("Goodbye")
 
 if __name__ == "__main__":
     try:
         loop()
     except KeyboardInterrupt:
-        destroy()
+        disconnect("")
