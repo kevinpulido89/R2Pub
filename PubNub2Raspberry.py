@@ -10,7 +10,7 @@ my_channel = 'temp_humid'
 def loop():
     while True:
         s = pubnub.subscribe(my_channel)
-        h = #pubnub.history(my_channel, count=100, callback=_callback, error=_error)
+        #h = pubnub.history(my_channel, count=100, callback=_callback, error=_error)
         print(s)
         #print(h)
         time.sleep(2.628)
