@@ -9,12 +9,6 @@ pubnub = Pubnub(publish_key='pub-c-cbfee07b-226d-46a2-a4e4-18827eb2552c', subscr
 
 my_channel = 'temp_humid'
 
-def _callback(message, channel):
-    print(message)
-
-def _error(message):
-    print(message)
-
 def Setup():
     print("Setting up... Please wait.")
     h=[]
@@ -34,7 +28,7 @@ def loop():
         ph=sum(h)/len(h)
         pt=sum(t)/len(t)
         pubnub.publish(my_channel, {
-            "eon":{"Temperatura":pt,"Humedad":ph}}, callback=_callback, error=_error)
+            "eon":{"Temperatura":pt,"Humedad":ph}})
         t.remove(t[0])
         h.remove(h[0])
         h_temp,t_temp = dht.read_retry(dht.DHT11, GPIO)
