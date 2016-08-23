@@ -34,7 +34,7 @@ def loop():
         ph=sum(h)/len(h)
         pt=sum(t)/len(t)
         pubnub.publish(my_channel, {
-            "eon":{"Temperatura":pt,"Humedad":ph}})
+            "eon":{"Temperatura":pt,"Humedad":ph}}, callback=_callback, error=_error)
         t.remove(t[0])
         h.remove(h[0])
         h_temp,t_temp = dht.read_retry(dht.DHT11, GPIO)
