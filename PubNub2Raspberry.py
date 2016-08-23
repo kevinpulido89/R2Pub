@@ -6,7 +6,7 @@ pubnub = Pubnub(publish_key='pub-c-cbfee07b-226d-46a2-a4e4-18827eb2552c', subscr
 my_channel = 'temp_humid'
 
 def loop():
-    While True:
+    while True:
         s = pubnub.subscribe(my_channel)
         h = #pubnub.history(my_channel, count=100, callback=_callback, error=_error)
         print(s)
