@@ -10,13 +10,18 @@ my_channel = "temp_humid"
 def _callback(message, channel):
     print(message)
 
+def HistoryCallback(message):
+    print(message)
+
 def _error(message):
     print(message)
 
 def loop():
     while True:
         #pubnub.subscribe(my_channel, callback=_callback)
-        pubnub.history(my_channel, count=5, callback=_callback, error=_error)
+        pubnub.history(my_channel, count=5, include_token=True, callback=HistoryCallback, error=callback)
+        #print pubnub.history(channel, count=2, include_token=True)
+        ##pubnub.history(my_channel, count=5, callback=_callback, error=_error)
         time.sleep(2.628)
 
 def destroy():
