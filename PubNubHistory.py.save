@@ -16,7 +16,8 @@ def loop():
         #pubnub.history(my_channel, count=10, include_token=True, callback=callback, error=callback)
         
         #Synchronous usage
-        print (pubnub.history(my_channel, count=2, include_token=False)) 
+        print (pubnub.history(my_channel, count=2, include_token=True
+)) 
         time.sleep(2.628)
 
 def destroy():

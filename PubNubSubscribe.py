@@ -2,7 +2,7 @@
 from pubnub import Pubnub
 import time
 
-pubnub = Pubnub(publish_key='pub-c-cbfee07b-226d-46a2-a4e4-18827eb2552c', subscribe_key='sub-c-12b25da4-5597-11e6-a5a4-0619f8945a4f')
+pubnub = Pubnub(publish_key='pub-c-cbfee07b-226d-46a2-a4e4-18827eb2552c', subscribe_key='sub-c-12b25da4-5597-11e6-a5a4-0619f8945a4f', uuid="Pi")
 
 my_channel = "temp_humid"
 
@@ -29,6 +29,7 @@ def loop():
 
 if __name__ == "__main__":
     try:
+        print (pubnub.here_now(my_channel))
         loop()
     except KeyboardInterrupt:
         disconnect("")
