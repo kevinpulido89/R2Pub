@@ -39,7 +39,8 @@ def loop():
         time.sleep(1.9)
 
 def destroy():
-    print("Goodbye")
+    pubnub.unsubscribe(my_channel)
+    print("DISCONNECTED")
 
 if __name__ == "__main__":
     h,t = Setup()
