@@ -19,7 +19,7 @@ def loop():
         #h = pubnub.history(my_channel, count=100, callback=_callback, error=_error)
         print(s)
         #print(h)
-        time.sleep(2.628)
+        time.sleep(3.628)
 
 def destroy():
     print("Goodbye")
