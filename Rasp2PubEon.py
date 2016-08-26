@@ -1,7 +1,7 @@
 from pubnub import Pubnub
 import Adafruit_DHT as dht
 import time
-import logger
+from datetime import datetime
 
 GPIO = 27
 
@@ -22,6 +22,14 @@ def Setup():
         time.sleep(0.5)
     return h,t
 
+def log(t,h):
+    now = datetime.now()
+    file = open('log.csv','a')
+    file.write('%s/%s/%s,%s:%s:%s,' % (now.day, now.month, now.year, now.hour, now.minute, now.second))
+    file.write(str(t) + "," + str(h))
+    file.write('\n')
+    file.close()
+
 #Publish Function
 def loop():
     while True:
@@ -35,7 +43,7 @@ def loop():
         t.insert(len(t),t_temp)
         h.insert(len(h),h_temp)
         print ('Temp={0:0.1f}*C Humidity={1:0.1f}%'.format(pt,ph))
-        logger.log(pt,ph)
+        log(pt,ph)
         time.sleep(1.9)
 
 def destroy():
