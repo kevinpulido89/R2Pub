@@ -70,11 +70,11 @@ def loop(h,t):
         mqttc.publish("Humid/value", ph)
 		
 	# Sobre-escribe array t y h
-        t.remove(t[0])
-        h.remove(h[0])
+        t.pop(0)
+        h.pop(0)
         h_temp,t_temp = dht.read_retry(dht.DHT11, GPIO)
-        t.insert(len(t),t_temp)
-        h.insert(len(h),h_temp)
+        t.append(t_temp)
+        h.append(h_temp)
 
         time.sleep(5)
 
