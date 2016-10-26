@@ -38,8 +38,9 @@ def loop(h,t):
         # Write the value to your variable in Ubidots
         responseT = variableT.save_value({"value": pt})
         responseH = variableH.save_value({"value": ph})
-        print (responseT[4])
-        print (responseH[4])
+        
+        # Imprime en pantalla los datos subidos a Ubidots
+        print ("Temperatura: %s*C\nHumedad: %s" % (pt,ph) + '%\n')
 
         # Sobre-escribe array t y h
         t.pop(0)
