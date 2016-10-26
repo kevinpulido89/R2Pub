@@ -20,7 +20,7 @@ def Setup():
     h=[]
     t=[]
     i=0
-    while len(t) < 10:
+    while len(t) < 6:
         h_temp,t_temp = dht.read_retry(dht.DHT11, GPIO)
         h.insert(i,h_temp)
         t.insert(i,t_temp)
@@ -32,21 +32,22 @@ def loop(h,t):
     while True:
         ph=sum(filter(None,h))/len(h)
         pt=sum(filter(None,t))/len(t)
-        #pt *= 1.43
+        ph=round(ph,2)
+        pt=round(pt,2)       
 
         # Write the value to your variable in Ubidots
         responseT = variableT.save_value({"value": pt})
         responseH = variableH.save_value({"value": ph})
-        print (responseT)
-        print (responseH)
+        print (responseT[4])
+        print (responseH[4])
 
-        t.remove(t[0])
-        h.remove(h[0])
+        # Sobre-escribe array t y h
+        t.pop(0)
+        h.pop(0)
         h_temp,t_temp = dht.read_retry(dht.DHT11, GPIO)
-        t.insert(len(t),t_temp)
-        h.insert(len(h),h_temp)
-        
-        time.sleep(13)
+        t.append(t_temp)
+        h.append(h_temp)        
+        time.sleep(15)
 
 def destroy():
     print("DISCONNECTED")
