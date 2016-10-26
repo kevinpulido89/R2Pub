@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # Librerias
 import os
+import json
 import time
 import paho.mqtt.client as paho
 import Adafruit_DHT as dht
@@ -9,10 +10,12 @@ from pubnub import Pubnub
 from datetime import datetime
 
 # Variables
-serverMosquitto = 'm12.cloudmqtt.com'
-portMosquitto = 13960
-userMosquitto = 'fndyggak'
-passMosquitto = 'Y33UVZ8Gh_7d'
+mqtt = {
+    "server":"m12.cloudmqtt.com",
+    "port":13960,
+    "user":"fndyggak",
+    "pass":"Y33UVZ8Gh_7d"
+}
 GPIO = 27
 my_channel = 'temp_humid'
 
@@ -27,7 +30,8 @@ def on_message(mosq, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
 def on_publish(mosq, obj, mid):
-    print("mid: " + str(mid))
+    #print("mid: " + str(mid))
+    print ('')
 
 def on_log(mosq, obj, level, string):
     print(string)
@@ -55,21 +59,35 @@ def log(h,t):
 
 def loop(h,t):
     while True:
+        # Calcula media de los datos
         ph=sum(filter(None,h))/len(h)
         pt=sum(filter(None,t))/len(t)
-        #pt *= 1.43
-        pubnub.publish(my_channel, {
-            "eon":{"Temperatura":pt,"Humedad":ph}})
-        print ('Temperature={0:0.1f}*C Humidity={1:0.1f}%'.format(pt,ph))
-        
+        ph=round(ph,2)
+        pt=round(pt,2)
+
+        # Crea Diccionario de datos
+        data = {
+            "Temperatura":pt,
+            "Humedad":ph
+        }
+
+        # Publicación en PubNub
+        pubnub.publish(my_channel,{
+            "eon":data})
+
+        # Convierte Diccionario de datos en paquete JSON
+        package = json.dumps(data)
+
+        # Publish a message mqtt
+        mqttc.publish("Hemeroteca/values",package)
+
+        # Imprime en pantalla los datos subidos a PubNub == mqtt
+        print ("Temperatura: %s*C\nHumedad: %s" % (pt,ph) + '%')
+
         # Almacena datos en log Local
         log(ph,pt)
 
-        # Publish a message mqtt
-        mqttc.publish("Temp/value", pt)
-        mqttc.publish("Humid/value", ph)
-		
-	# Sobre-escribe array t y h
+        # Sobre-escribe array t y h
         t.pop(0)
         h.pop(0)
         h_temp,t_temp = dht.read_retry(dht.DHT11, GPIO)
@@ -93,12 +111,12 @@ mqttc.on_publish = on_publish
 #mqttc.on_log = on_log
 
 # Parse CLOUDMQTT_URL (or fallback to localhost)
-url_str = os.environ.get(serverMosquitto, 'mqtt://localhost:1883')
-url = urlparse(serverMosquitto)
+url_str = os.environ.get(mqtt["server"], 'mqtt://localhost:1883')
+url = urlparse(mqtt["server"])
 
 # Connect
-mqttc.username_pw_set(userMosquitto, passMosquitto)
-mqttc.connect(serverMosquitto, portMosquitto)
+mqttc.username_pw_set(mqtt["user"], mqtt["pass"])
+mqttc.connect(mqtt["server"], mqtt["port"])
 
 if __name__ == "__main__":
     h,t = Setup()
